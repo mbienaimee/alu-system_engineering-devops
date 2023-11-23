@@ -1,6 +1,39 @@
 #!/usr/bin/env bash
 # Install nginx web server, and return a page when querying Nginx
-sudo apt update && upgrade
+
+sudo apt update && sudo apt upgrade
 sudo apt install nginx -y 
+
+# Check for errors during installation
+if [ $? -ne 0 ]; then
+    echo "Nginx installation failed."
+    exit 1
+fi
+
+# Write HTML content to index.html
 echo "Holberton School" | sudo tee /var/www/html/index.html
-sudo service nginx start
+
+# Check if HTML content is written correctly
+if [ ! -s /var/www/html/index.html ]; then
+    echo "Error: HTML content not written to index.html."
+    exit 1
+fi
+
+# Restart Nginx
+sudo service nginx restart
+
+# Check if Nginx is running
+if ! pgrep -x "nginx" >/dev/null; then
+    echo "Nginx is not running."
+    exit 1
+fi
+
+# Check if Nginx is serving the expected content
+response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
+if [ "$response" != "200" ]; then
+    echo "Nginx is not returning 200 OK."
+    exit 1
+fi
+
+echo "Nginx is installed and configured successfully."
+
