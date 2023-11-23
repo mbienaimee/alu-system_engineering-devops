@@ -1,28 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Update the package list
-sudo apt-get update
+# Update and upgrade the system
+sudo apt update && sudo apt upgrade -y
 
-# Install Nginx
-sudo apt-get install -y nginx
+# Install nginx web server
+sudo apt install nginx -y
 
-# Create a default Nginx configuration
-sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+# Check if nginx installation was successful
+if [ $? -eq 0 ]; then
+    # Create the directory if it doesn't exist
+    sudo mkdir -p /var/www/html/
 
-    root /var/www/html;
-    index index.html;
+    # Create a simple HTML page with the required string
+    echo "Holberton School" | sudo tee /var/www/html/index.html
 
-    server_name _;
-
-    location / {
-        echo "Holberton School for the win!";
-    }
-}
-EOF'
-
-# Restart Nginx
-sudo service nginx restart
+    # Restart the nginx service
+    sudo service nginx restart
+else
+    echo "Nginx installation failed. Please check the logs for more information."
+fi
 
