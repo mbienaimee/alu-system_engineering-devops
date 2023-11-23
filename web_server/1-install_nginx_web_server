@@ -1,22 +1,6 @@
 #!/usr/bin/env bash
-
-# Update and upgrade the system
-sudo apt update && sudo apt upgrade -y
-
-# Install nginx web server
-sudo apt install nginx -y
-
-# Check if nginx installation was successful
-if [ $? -eq 0 ]; then
-    # Create the directory if it doesn't exist
-    sudo mkdir -p /var/www/html/
-
-    # Create a simple HTML page with the required string
-    echo "Holberton School" | sudo tee /var/www/html/index.html
-
-    # Restart the nginx service
-    sudo service nginx restart
-else
-    echo "Nginx installation failed. Please check the logs for more information."
-fi
-
+# Install nginx web server, and return a page when querying Nginx
+sudo apt update && upgrade
+sudo apt install nginx -y 
+echo "Holberton School" | sudo tee /var/www/html/index.html
+sudo service nginx start
