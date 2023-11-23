@@ -1,6 +1,28 @@
-#!/usr/bin/env bash
-# Install nginx web server, and return a page when querying Nginx
-sudo apt update && upgrade
-sudo apt install nginx -y 
-echo "Holberton School" | sudo tee /var/www/html/index.html
-sudo service nginx start
+#!/bin/bash
+
+# Update the package list
+sudo apt-get update
+
+# Install Nginx
+sudo apt-get install -y nginx
+
+# Create a default Nginx configuration
+sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html;
+
+    server_name _;
+
+    location / {
+        echo "Holberton School for the win!";
+    }
+}
+EOF'
+
+# Restart Nginx
+sudo service nginx restart
+
