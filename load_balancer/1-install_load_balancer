@@ -1,48 +1,27 @@
 #!/usr/bin/env bash
-# This script installs and configures HAProxy on lb-01 server
+#Configuration for haproxy load balancer
 
-# Ensure script is run as root
-if [ "$EUID" -ne 0 ]; then
-    echo "Please run as root (use sudo)"
-    exit 1
-fi
-
-# Install HAProxy
 apt-get update
-apt-get install -y haproxy
+apt-get -y install haproxy
 
-# Create HAProxy configuration file
-cat <<EOF > /etc/haproxy/haproxy.cfg
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
-
-defaults
-    log global
-    mode http
-    option httplog
-    option dontlognull
-    timeout connect 5000
-    timeout client 50000
-    timeout server 50000
-
-frontend main
-    bind *:80
-    mode http
-    default_backend web_servers
-
-backend web_servers
-    balance roundrobin
-    server web-01 18.234.238.225:80 check
-    server web-02 54.174.65.83:80 check
-EOF
-
-# Restart HAProxy to apply changes
+BACKEND_CONFIG=\
+"
+backend allServers
+	timeout connect 10s
+	timeout server  10s
+	balance roundrobin
+	mode http
+	server 5790-web-01 18.234.238.225:80 check
+	server 5790-web-02 54.174.65.83:80 check
+"
+FRONTEND_CONFIG=\
+"
+frontend www
+	mode http
+	timeout client 10s
+	bind *:80
+	default_backend allServers
+"
+echo -e "$FRONTEND_CONFIG" >> /etc/haproxy/haproxy.cfg
+echo -e "$BACKEND_CONFIG" >> /etc/haproxy/haproxy.cfg
 service haproxy restart
-
