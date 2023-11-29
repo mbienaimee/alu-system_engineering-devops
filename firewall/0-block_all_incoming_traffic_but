@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
-# bash script that  installs the 'ufw' firewall and,
-# setup a few rules on 'web-01'
-
-apt-get install ufw
-sed -i 's/IPV6=.*/IPV6=yes/' /etc/default/ufw
-ufw disable
-ufw enable
-ufw default deny incoming
-ufw default allow outgoing
-sudo ufw allow from any to any port 22 proto tcp
-sudo ufw allow from any to any port 443 proto tcp
-sudo ufw allow from any to any port 80 proto tcp
+# bash script that  installs the 'ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh 
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp
+sudo ufw enable
