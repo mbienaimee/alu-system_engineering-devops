@@ -1,7 +1,5 @@
-#!/bin/bash
-# Start Nginx service
-service nginx start
-sleep 2
-status=$(service nginx status)
-echo "$status"
-
+#!/usr/bin/env bash
+# Configure 'nginx' to run & listen on port 80
+sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+service nginx restart
+pkill -9 nginx
