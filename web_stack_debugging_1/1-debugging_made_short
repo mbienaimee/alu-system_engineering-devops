@@ -1,8 +1,18 @@
-#!/usr/bin/env bash
-# Configure 'nginx' to run & listen on port 80
-sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+#!/bin/bash
+
+# Configure 'nginx'
+
+# Create symbolic link for the default site configuration
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Restart Nginx
 service nginx restart
-pkill -9 nginx
-sleep 2
-status=$(service nginx status)
-echo "$status"
+
+# Alternatively, you can use the following command to stop and start Nginx:
+# service nginx stop
+# service nginx start
+
+# Terminate Nginx process (if needed)
+# Note: Killing the process may not be necessary after a restart
+# kill "$(pgrep 'nginx' | head -n 1)"
+
