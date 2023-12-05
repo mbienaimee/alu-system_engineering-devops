@@ -1,5 +1,7 @@
 #!/bin/bash
+# Start Nginx service
 service nginx start
 sleep 2
-curl 0:80
+status=$(service nginx status)
+echo "$status"
 
