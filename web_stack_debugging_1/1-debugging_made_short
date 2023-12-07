@@ -1,18 +1,5 @@
-#!/bin/bash
-
-# Configure 'nginx'
-
-# Create symbolic link for the default site configuration
+#!/usr/bin/env bash
+# comment
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-# Restart Nginx
 service nginx restart
-
-# Alternatively, you can use the following command to stop and start Nginx:
-# service nginx stop
-# service nginx start
-
-# Terminate Nginx process (if needed)
-# Note: Killing the process may not be necessary after a restart
-# kill "$(pgrep 'nginx' | head -n 1)"
-
+kill "$(pgrep 'nginx' | head -1)"
