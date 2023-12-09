@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
-# adv task
+# Update Nginx configuration
 sudo sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+
+# Restart Nginx service
 sudo service nginx restart
-sudo pkill -9 nginx
+
+# Check if Nginx is running
+if sudo service nginx status | grep -q "active (running)"; then
+    echo "Got: 1"
+else
+    echo "Got:"
+    echo " * nginx is not running"
+fi
+
