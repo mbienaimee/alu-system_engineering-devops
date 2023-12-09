@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script is for debugging default nginx page in docker container on port 80
-sudo sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
-service nginx restart
-kill -9 "$(cat /var/run/nginx.pid)"
+# adv task
+sudo sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+sudo service nginx restart
+sudo pkill -9 nginx
