@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-# adv task
-if service nginx status | grep -q "not running"; then
-  echo " * nginx is not running"
-fi
+# adv 
+service nginx status | grep -q "not running" [ && echo " * nginx is not running" ]
