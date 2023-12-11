@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# bash script that configures containe
+useradd -m -s /bin/bash nginx
+sed -i 's/user\s*=\s*www-data/user = nginx/' /etc/nginx/nginx.conf
+service nginx restart
+ps auxff | grep '[n]ginx'
+nc -z 0 8080
