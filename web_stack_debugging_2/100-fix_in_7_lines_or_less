@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Fixes the issue with the server
-chmod 644 /etc/nginx/nginx.conf
-sed -Ei 's/\s*#?\s*user .*/user nginx;/' /etc/nginx/nginx.conf
-sed -Ei 's/(listen (\[::\]:)?80) /\180 /' /etc/nginx/sites-enabled/default
-pkill apache2
-su nginx -s /bin/bash -c 'service nginx restart'
+useradd -m -s /bin/bash nginx
+sed -i 's/user\s*=\s*www-data/user = nginx/' /etc/nginx/nginx.conf
+service nginx restart
+ps aux | grep '[n]ginx'
+nc -z 0 8080
+ps aux | grep '[n]ginx' | grep -q nginx
