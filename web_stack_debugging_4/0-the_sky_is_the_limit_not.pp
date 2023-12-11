@@ -1,7 +1,14 @@
-# puppet code to configure OS so as to enable the user 'holberton' to login & open a file without error messages
+# increase ULIMTI
 
-exec { 'replace_hard_soft_limit_for_holberton_user':
-  path    => '/usr/bin:/usr/sbin:/bin',
-  command => 'sed -i "/holberton hard nofile/c\holberton hard nofile 4096" /etc/security/limits.conf;\
-sed -i "/holberton soft nofile/c\holberton soft nofile 1024" /etc/security/limits.conf',
+# declare nginx service and make sure it is running
+service { 'nginx':
+  ensure => running,
+}
+
+exec { 'increase ULIMIT':
+  # replace with new ULIMIT value
+  command  => 'sed -i "s/ULIMIT=\"-n 15\"/ULIMIT=\"-n 4000\"/g" /etc/default/nginx',
+  provider => 'shell',
+  # tells nginx to restart
+  notify   => Service['nginx']
 }
